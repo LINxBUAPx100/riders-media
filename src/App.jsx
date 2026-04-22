@@ -82,7 +82,11 @@ function HomeView({ nav }) {
       </section>
 
       <section style={{ borderTop: `1px solid ${BORDER}`, borderBottom: `1px solid ${BORDER}`, padding: "48px 5vw", display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(160px,1fr))", gap: 32 }}>
-        {[{ val: "48h", label: "Entrega promedio" }, { val: "100%", label: "Transparencia total" }, { val: "8", label: "Servicios en catálogo" }, { val: "PyMEs", label: "Nuestro enfoque" }].map((s, i) => (
+
+
+
+
+        {[{ val: "48h", label: "Entrega promedio" }, { val: "100%", label: "Transparencia total" }, { val: CATALOG.length, label: "Servicios en catálogo"}, { val: "PyMEs", label: "Nuestro enfoque" }].map((s, i) => (
           <div key={i}>
             <div style={{ fontSize: "clamp(36px,5vw,52px)", fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 800, color: i % 2 === 0 ? ACCENT : "#fff", lineHeight: 1 }}>{s.val}</div>
             <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: MUTED, marginTop: 6 }}>{s.label}</div>
@@ -258,6 +262,7 @@ function ContactView() {
   const [sent, setSent] = useState(false);
   const [error, setError] = useState(false); // Para manejar errores
   const [loading, setLoading] = useState(false);
+  
 
   const handle = (e) => {
     e.preventDefault(); 
@@ -274,6 +279,7 @@ function ContactView() {
       email: form.email,
       service_requested: serviceName,
       message: form.message,
+      phone: form.phone,
     };
 
   emailjs
@@ -288,7 +294,11 @@ function ContactView() {
         console.log("¡MENSAJE ENVIADO CON ÉXITO!");
         setLoading(false);
         setSent(true);
-        setForm({ name: "", email: "", service: "content", message: "" });
+
+
+
+
+        setForm({ name: "", email: "",phone: "", service: "content", message: "" });
         setTimeout(() => setSent(false), 6000);
       },
       (error) => {
@@ -308,10 +318,29 @@ function ContactView() {
         <div style={{ background: ACCENT_GLOW, borderRight: "1px solid " + BORDER, padding: "48px 36px" }}>
           <h1 style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 52, fontWeight: 800, textTransform: "uppercase", lineHeight: 0.95, marginBottom: 40 }}>Hablemos<br /><span style={{ color: ACCENT }}>Hoy.</span></h1>
           <div style={{ display: "flex", flexDirection: "column", gap: 28 }}>
-            {[{ label: "Email", val: "hola@ridersmedia.mx" }, { label: "WhatsApp", val: "+52 220 225 6586" }, { label: "Ciudad", val: "Puebla, MX" }].map(c => (
+            {[
+              { label: "Email", val: "hola@ridersmedia.mx" }, 
+              { label: "WhatsApp", val: "+52 220 225 6586", href: "https://api.whatsapp.com/send/?phone=522202256586&text=Quiero+saber+m%C3%A1s+de+sus+servicios&type=phone_number&app_absent=0" }, 
+              { label: "Ciudad", val: "Puebla, MX" }
+
+
+
+
+            ].map(c => (
               <div key={c.label}>
                 <div style={{ fontSize: 10, fontWeight: 800, letterSpacing: "0.15em", textTransform: "uppercase", color: ACCENT, marginBottom: 4 }}>{c.label}</div>
-                <div style={{ fontSize: 14, color: "#fff", fontWeight: 500 }}>{c.val}</div>
+                <div style={{ fontSize: 14, color: "#fff", fontWeight: 500 }}>
+                  {c.href ? (
+                    <a href={c.href} target="_blank" rel="noopener noreferrer" style={{ color: "inherit", textDecoration: "none" }}>
+                      {c.val}
+                    </a>
+                  ) : (
+                    c.val
+                  )}
+
+
+
+                </div>
               </div>
             ))}
           </div>
@@ -324,6 +353,16 @@ function ContactView() {
             <div><label style={labelStyle}>Nombre</label><input required style={inputStyle} value={form.name} placeholder="Tu nombre" onChange={e => setForm({ ...form, name: e.target.value })} onFocus={e => e.target.style.borderColor = ACCENT} onBlur={e => e.target.style.borderColor = BORDER} /></div>
             <div><label style={labelStyle}>Email</label><input required type="email" style={inputStyle} value={form.email} placeholder="tu@email.com" onChange={e => setForm({ ...form, email: e.target.value })} onFocus={e => e.target.style.borderColor = ACCENT} onBlur={e => e.target.style.borderColor = BORDER} /></div>
           </div>
+          
+          {/* Campo de Teléfono */}
+          <div>
+            <label style={labelStyle}>Teléfono</label>
+            <input required type="tel" style={inputStyle} value={form.phone} placeholder="Tu número a 10 dígitos" onChange={e => setForm({ ...form, phone: e.target.value })} onFocus={e => e.target.style.borderColor = ACCENT} onBlur={e => e.target.style.borderColor = BORDER} />
+          </div>
+
+
+
+
           <div>
             <label style={labelStyle}>Servicio</label>
             <select style={{ ...inputStyle, appearance: "none" }} value={form.service} onChange={e => setForm({ ...form, service: e.target.value })} onFocus={e => e.target.style.borderColor = ACCENT} onBlur={e => e.target.style.borderColor = BORDER}>
@@ -332,7 +371,10 @@ function ContactView() {
           </div>
           <div><label style={labelStyle}>Tu reto principal</label><textarea required rows={5} style={{ ...inputStyle, resize: "vertical" }} value={form.message} placeholder="Cuéntanos en qué estás trabajando..." onChange={e => setForm({ ...form, message: e.target.value })} onFocus={e => e.target.style.borderColor = ACCENT} onBlur={e => e.target.style.borderColor = BORDER} /></div>
           
-          {error && <div style={{ color: "#EF4444", fontSize: 13, fontWeight: 600 }}>Hubo un error al enviar. Por favor intenta de nuevo.</div>}
+
+
+
+          {error && <div style={{ color: "#EF4444", fontSize: 13, fontWeight: 600 }}>Hubo un error al enviar. Por favor, inténtalo de nuevo.</div>}
           
           <button type="submit" disabled={loading} style={{ background: loading ? "rgba(6,182,212,0.4)" : ACCENT, color: "#000", border: "none", padding: 18, fontWeight: 800, fontSize: 13, letterSpacing: "0.12em", textTransform: "uppercase", cursor: loading ? "wait" : "pointer", fontFamily: "inherit", clipPath: "polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px))" }}>
             {loading ? "Enviando..." : "Enviar Solicitud →"}
@@ -341,9 +383,12 @@ function ContactView() {
         </form>
       </div>
     </div>
-  );
-}
 
+
+
+
+);
+}
 // ── APP RAÍZ ───────────────────────────────────────────────────────────────
 
 export default function App() {
