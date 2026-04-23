@@ -147,9 +147,9 @@ function HomeView({ nav }) {
           
           <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
             {[
-              { icon: "⚡", title: "Velocidad Táctica", desc: "Sistemas estructurados para entregar proyectos en días, no en meses." },
-              { icon: "🎯", title: "Foco en Conversión", desc: "Un diseño bonito que no vende es arte. Nosotros hacemos negocios." },
-              { icon: "🔍", title: "Transparencia Radical", desc: "Catálogo público. Sabes exactamente qué incluye y cuánto cuesta." }
+              { icon: "M", title: "Velocidad Táctica", desc: "Sistemas estructurados para entregar proyectos en días, no en meses." },
+              { icon: "Á", title: "Foco en Conversión", desc: "Un diseño bonito que no vende es arte. Nosotros hacemos negocios." },
+              { icon: "S", title: "Transparencia Radical", desc: "Catálogo público. Sabes exactamente qué incluye y cuánto cuesta." }
             ].map((item, i) => (
               <div key={i} style={{ display: "flex", gap: 24, background: SURFACE, padding: "32px", borderRadius: "8px", border: `1px solid ${BORDER}` }}>
                 <div style={{ fontSize: 32 }}>{item.icon}</div>
@@ -205,7 +205,7 @@ function HomeView({ nav }) {
       <section style={{ padding: "140px 8vw", background: BG, borderBottom: `1px solid ${BORDER}`, textAlign: "center" }}>
         <div style={{ maxWidth: 700, margin: "0 auto" }}>
           <div style={{ width: 64, height: 64, background: SURFACE, border: `1px solid ${BORDER}`, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 24, margin: "0 auto 32px", color: ACCENT }}>
-            📈
+            V
           </div>
           <h2 style={{ fontSize: "clamp(42px, 6vw, 64px)", color: INK, fontWeight: 900, lineHeight: 1, marginBottom: 24, fontFamily: "'Barlow Condensed', sans-serif", textTransform: "uppercase" }}>
             ¿Listo para acelerar tu crecimiento?
@@ -628,7 +628,7 @@ export default function App() {
         {page === "contacto" && <ContactView isMobile={isMobile} />}
       </main>
 
-      <footer style={{ padding: "40px 5vw", borderTop: `1px solid ${BORDER}`, background: BG2 }}>
+      <footer style={{ padding: "20px 5vw", borderTop: `1px solid ${BORDER}`, background: BG2 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 24 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
              <div style={{ width: 24, height: 24, background: INK, borderRadius: "4px", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontWeight: 900, fontSize: 12 }}>R</div>
