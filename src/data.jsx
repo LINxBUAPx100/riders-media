@@ -49,10 +49,8 @@ export const CATALOG = [
 
 // ── CASOS DE ÉXITO ───────────────────────────────────────────────────────
 export const CASES = [
-  { cat: "Video", client: "MotoShop GDL", result: "+340% Reproducciones", color: "#0D9488", link: "#" },
-  { cat: "Ads", client: "Tacos El Rancho", result: "3x Ventas en 30 días", color: "#0F766E", link: "#" },
-  { cat: "Web", client: "Clínica Vita", result: "80+ Leads / mes", color: "#57534E", link: "#" },
-  { cat: "Branding", client: "Ropa Urbana MX", result: "Identidad en 5 días", color: "#DC2626", link: "#" },
+  { cat: "Muy pronto!", client: "Podrias ser el primero", result: "Alcanza tus metas", color: "#0D9488", link: "#" },
+
 ];
 
 
@@ -63,7 +61,7 @@ export const PILLARS = [
     title: "Velocidad", 
     body: "Entregamos sin excusas. Los proyectos tienen fechas y las cumplimos.",
     numColor: COLORS.RIDERS,   // < Controlador el color del "01"
-    titleColor: COLORS.ACCENT, // < Controlador el color de "Velocidad"
+    titleColor: COLORS.INK, // < Controlador el color de "Velocidad"
     bodyColor: COLORS.INK2     // < Controlador el texto pequeño
   },
   { 

@@ -41,6 +41,8 @@ function SectionLabel({ children }) {
 // ── VISTAS ───────────────────────────────────────────────────────────────
 
 function HomeView({ nav }) {
+  const [playVideo, setPlayVideo] = useState(false);
+
   return (
     <div style={{ background: BG }}>
       {/* 1. HERO EXPANDIDO Y ESPACIADO */}
@@ -68,6 +70,38 @@ function HomeView({ nav }) {
               Agendar Llamada
             </button>
           </div>
+        </div>
+
+        {/* ── ELEMENTO VISUAL HERO (AHORA CON VIDEO INTERACTIVO) ── */}
+        <div style={{ flex: "1 1 400px", minHeight: "500px", background: SURFACE, border: `1px solid ${BORDER}`, borderRadius: "8px", position: "relative", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
+          
+          {!playVideo ? (
+            // ESTADO 1: Diseño original con botón
+            <>
+              <div style={{ position: "absolute", inset: 0, backgroundImage: `linear-gradient(${BORDER} 1px, transparent 1px), linear-gradient(90deg, ${BORDER} 1px, transparent 1px)`, backgroundSize: "40px 40px", opacity: 0.5 }} />
+              
+              <div style={{ textAlign: "center", zIndex: 2 }}>
+                <div 
+                  onClick={() => setPlayVideo(true)} 
+                  style={{ width: 80, height: 80, borderRadius: "50%", background: ACCENT, color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 20px", fontSize: 24, cursor: "pointer", boxShadow: `0 10px 30px ${ACCENT}40`, transition: "transform 0.2s" }} 
+                  onMouseEnter={e => e.currentTarget.style.transform = "scale(1.05)"} 
+                  onMouseLeave={e => e.currentTarget.style.transform = "scale(1)"}
+                >
+                  ▶
+                </div>
+                <span style={{ fontSize: 14, fontWeight: 800, color: INK, letterSpacing: "0.1em", textTransform: "uppercase" }}>Ver Showreel</span>
+              </div>
+            </>
+          ) : (
+            // ESTADO 2: El iframe del video
+            <iframe 
+              style={{ position: "absolute", inset: 0, width: "100%", height: "100%", border: "none" }}
+              src="https://player.vimeo.com/video/TU_ID_DE_VIMEO?autoplay=1&title=0&byline=0&portrait=0" 
+              allow="autoplay; fullscreen; picture-in-picture" 
+              allowFullScreen
+              title="Showreel Riders Media"
+            ></iframe>
+          )}
         </div>
 
 
@@ -382,26 +416,44 @@ function ContactView() {
   return (
     <div style={{ padding: "120px 8vw", background: BG }}>
       <div style={{ maxWidth: 1000, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1.5fr", gap: 0, border: `1px solid ${BORDER}`, borderRadius: "8px", overflow: "hidden" }}>
+        
+        {/* PANEL IZQUIERDO (INFORMACIÓN) */}
         <div style={{ background: BG2, padding: "60px 40px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
           <div>
             <h1 style={{ fontSize: "clamp(36px, 4vw, 48px)", fontWeight: 900, color: INK, marginBottom: 40, fontFamily: "'Barlow Condensed', sans-serif", textTransform: "uppercase", lineHeight: 1 }}>Hablemos<br /><span style={{ color: ACCENT }}>Hoy.</span></h1>
             <div style={{ display: "flex", flexDirection: "column", gap: 32 }}>
               {[
                 { label: "Email", val: "contacto@riders.media" }, 
-                { label: "WhatsApp", val: "+52 220 225 6586", href: "https://api.whatsapp.com/send/?phone=522202256586" }, 
+                { 
+                  label: "WhatsApp", 
+                  color: "#25D366",       /* <--- Color para la palabra "WHATSAPP" */
+                  valColor: INK,          /* <--- Color para el número "+52..." */
+                  val: "+52 220 225 6586", 
+                  href: "https://api.whatsapp.com/send/?phone=522202256586" 
+                }, 
                 { label: "Ciudad", val: "Puebla, MX" }
               ].map(c => (
                 <div key={c.label}>
-                  <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: "0.15em", textTransform: "uppercase", color: ACCENT, marginBottom: 6 }}>{c.label}</div>
-                  <div style={{ fontSize: 16, color: INK, fontWeight: 600 }}>
+                  {/* ETIQUETA */}
+                  <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: "0.15em", textTransform: "uppercase", color: c.color || ACCENT, marginBottom: 6 }}>
+                    {c.label}
+                  </div>
+                  
+                  {/* NÚMERO / VALOR */}
+                  <div style={{ fontSize: 16, color: c.valColor || INK, fontWeight: 600 }}>
                     {c.href ? <a href={c.href} target="_blank" rel="noopener noreferrer" style={{ color: "inherit", textDecoration: "none" }}>{c.val}</a> : c.val}
                   </div>
                 </div>
-              ))}
+               ))}
             </div>
+          </div>
+          
+          <div style={{ marginTop: 60, padding: 24, background: SURFACE, border: `1px solid ${BORDER}`, borderRadius: "4px" }}>
+            <p style={{ fontSize: 13, color: INK2, lineHeight: 1.6, fontStyle: "italic", margin: 0 }}>Respondemos en menos de 24 horas. Sin filtros, directo al estratega.</p>
           </div>
         </div>
 
+        {/* PANEL DERECHO (FORMULARIO) */}
         <form onSubmit={handle} style={{ padding: "60px 40px", display: "flex", flexDirection: "column", gap: 24, background: SURFACE }}>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
             <div>
@@ -432,6 +484,7 @@ function ContactView() {
           </button>
           {sent && <div style={{ color: ACCENT, fontWeight: 700 }}>✓ Mensaje recibido.</div>}
         </form>
+        
       </div>
     </div>
   );
@@ -441,8 +494,8 @@ function ContactView() {
 function SocialFloat() {
   const socialLinks = [
     { name: "WA", color: "#25D366", url: "https://api.whatsapp.com/send/?phone=522202256586" },
-    { name: "FB", color: "#1877F2", url: "https://facebook.com/riders.media" },
-    { name: "IG", color: "#E4405F", url: "https://instagram.com/riders.media" }
+    { name: "FB", color: "#1877F2", url: "https://www.facebook.com/profile.php?id=61579283677547" },
+    { name: "IG", color: "#E4405F", url: "https://www.instagram.com/riders_media.mk/" }
   ];
 
   return (
@@ -468,7 +521,6 @@ function SocialFloat() {
     </div>
   );
 }
-
 
 export default function App() {
   const [page, setPage] = useState("inicio");
@@ -548,22 +600,11 @@ export default function App() {
   ];
 
   return (
-    <div style={{ minHeight: "100vh", background: BG, color: INK, fontFamily: "system-ui, sans-serif" }}>
+    // 1. AÑADIMOS DISPLAY FLEX Y FLEX-DIRECTION AL CONTENEDOR PRINCIPAL
+    <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh", background: BG, color: INK, fontFamily: "system-ui, sans-serif" }}>
+      
       {/* Botones Sociales Flotantes */}
-      <div style={{ position: "fixed", bottom: "30px", right: "30px", display: "flex", flexDirection: "column", gap: "12px", zIndex: 2000 }}>
-        {[
-          { name: "WA", color: "#25D366", url: "https://api.whatsapp.com/send/?phone=522202256586" },
-          { name: "FB", color: "#1877F2", url: "https://www.facebook.com/profile.php?id=61579283677547" },
-          { name: "IG", color: "#E4405F", url: "https://www.instagram.com/riders_media.mk/" }
-        ].map(link => (
-          <a key={link.name} href={link.url} target="_blank" rel="noopener noreferrer"
-             style={{ width: "50px", height: "50px", borderRadius: "50%", background: link.color, color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", textDecoration: "none", fontWeight: "900", fontSize: "14px", boxShadow: "0 4px 12px rgba(0,0,0,0.2)", transition: "transform 0.3s ease" }}
-             onMouseEnter={e => e.currentTarget.style.transform = "scale(1.1) translateY(-5px)"}
-             onMouseLeave={e => e.currentTarget.style.transform = "scale(1) translateY(0)"}>
-            {link.name}
-          </a>
-        ))}
-      </div>
+      <SocialFloat />
 
       <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 1000, background: `${BG}ee`, backdropFilter: "blur(12px)", borderBottom: `1px solid ${BORDER}`, height: "80px", display: "flex", alignItems: "center", padding: "0 5vw", justifyContent: "space-between" }}>
         <div onClick={() => nav("inicio")} style={{ cursor: "pointer", display: "flex", alignItems: "center", gap: 10 }}>
@@ -584,7 +625,8 @@ export default function App() {
         </button>
       </nav>
 
-      <main style={{ paddingTop: "80px" }}>
+      {/* 2. AÑADIMOS flex: 1 A LA ETIQUETA MAIN PARA QUE EMPUJE EL FOOTER HACIA ABAJO */}
+      <main style={{ flex: 1, paddingTop: "80px" }}>
         {page === "inicio" && <HomeView nav={nav} />}
         {page === "catalogo" && <CatalogView nav={nav} />}
         {page === "valor" && <ValorView stats={marketStats} />}
