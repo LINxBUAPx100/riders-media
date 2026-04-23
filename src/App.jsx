@@ -145,25 +145,45 @@ function HomeView({ nav }) {
   );
 }
 
+// revisar este pedo hay error:
+
 function CatalogView({ nav }) {
-  const monthly = CATALOG.filter(s => s.tag === "Mensual");
-  const oneTime = CATALOG.filter(s => s.tag === "Pago único");
-  const perPiece = CATALOG.filter(s => s.tag === "Por pieza");
+  // Usamos .toLowerCase() para que la comparación sea segura
+  const monthly = CATALOG.filter(s => s.tag.toLowerCase() === "mensual");
+  const oneTime = CATALOG.filter(s => s.tag.toLowerCase() === "pago único");
+  const perPiece = CATALOG.filter(s => s.tag.toLowerCase() === "por pieza");
 
   function Section({ title, items }) {
+    // Si una sección no tiene items, no la renderizamos
+    if (items.length === 0) return null;
+
     return (
       <div style={{ marginBottom: 64 }}>
         <SectionLabel>{title}</SectionLabel>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(300px,1fr))", gap: 2 }}>
           {items.map(s => (
-            <div key={s.id} style={{ background: s.highlight ? ACCENT_GLOW : SURFACE, border: `1px solid ${s.highlight ? ACCENT_BORDER : BORDER}`, padding: "32px 28px", position: "relative", transition: "transform 0.2s,border-color 0.2s" }}
+            <div key={s.id} style={{ 
+              background: s.highlight ? ACCENT_GLOW : SURFACE, 
+              border: `1px solid ${s.highlight ? ACCENT_BORDER : BORDER}`, 
+              padding: "32px 28px", 
+              position: "relative", 
+              transition: "transform 0.2s,border-color 0.2s" 
+            }}
               onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-3px)"; if (!s.highlight) e.currentTarget.style.borderColor = ACCENT_BORDER; }}
               onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; if (!s.highlight) e.currentTarget.style.borderColor = BORDER; }}>
+              
               {s.highlight && <div style={{ position: "absolute", top: 12, right: 12, background: ACCENT, color: "#000", fontSize: 9, fontWeight: 800, letterSpacing: "0.1em", textTransform: "uppercase", padding: "3px 8px" }}>Popular</div>}
+              
               <Chip>{s.tag}</Chip>
-              <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 52, fontWeight: 800, color: "#fff", lineHeight: 1, marginTop: 16, letterSpacing: "-0.02em" }}>{s.price}<span style={{ fontSize: 16, fontWeight: 600, color: MUTED }}> MXN</span></div>
+              
+              <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 52, fontWeight: 800, color: "#fff", lineHeight: 1, marginTop: 16, letterSpacing: "-0.02em" }}>
+                {s.price}
+                <span style={{ fontSize: 16, fontWeight: 600, color: MUTED }}> MXN</span>
+              </div>
+              
               <h3 style={{ fontSize: 17, fontWeight: 800, color: "#fff", marginTop: 16, marginBottom: 8 }}>{s.name}</h3>
               <p style={{ fontSize: 13, color: MUTED, lineHeight: 1.6 }}>{s.desc}</p>
+              
               <button onClick={() => nav("contacto")} style={{ marginTop: 24, background: "none", border: `1px solid ${ACCENT_BORDER}`, color: ACCENT, fontSize: 11, fontWeight: 800, letterSpacing: "0.1em", textTransform: "uppercase", padding: "9px 18px", cursor: "pointer", width: "100%", transition: "all 0.2s" }}
                 onMouseEnter={e => { e.currentTarget.style.background = ACCENT; e.currentTarget.style.color = "#000"; }}
                 onMouseLeave={e => { e.currentTarget.style.background = "none"; e.currentTarget.style.color = ACCENT; }}>
@@ -183,8 +203,12 @@ function CatalogView({ nav }) {
         <h1 style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: "clamp(48px,7vw,80px)", fontWeight: 800, textTransform: "uppercase", lineHeight: 0.95, marginTop: 20, marginBottom: 20 }}>
           Servicios &<br /><span style={{ color: ACCENT }}>Precios</span>
         </h1>
-        <p style={{ color: MUTED, fontSize: 15, lineHeight: 1.7 }}>Sin letra chica. Sin sorpresas. Todos los precios son desde — cotizamos según tu proyecto. Inversión en publicidad no incluida en paquetes de Ads.</p>
+        <p style={{ color: MUTED, fontSize: 15, lineHeight: 1.7 }}>
+          Sin letra chica. Sin sorpresas. Todos los precios son desde — cotizamos según tu proyecto.
+        </p>
       </div>
+      
+      {/* Asegúrate de llamar a las secciones con el nombre exacto que quieres mostrar */}
       <Section title="Por pieza" items={perPiece} />
       <Section title="Pago único" items={oneTime} />
       <Section title="Paquetes mensuales" items={monthly} />
@@ -319,7 +343,7 @@ function ContactView() {
           <h1 style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 52, fontWeight: 800, textTransform: "uppercase", lineHeight: 0.95, marginBottom: 40 }}>Hablemos<br /><span style={{ color: ACCENT }}>Hoy.</span></h1>
           <div style={{ display: "flex", flexDirection: "column", gap: 28 }}>
             {[
-              { label: "Email", val: "hola@ridersmedia.mx" }, 
+              { label: "Email", val: "contacto@riders.media" }, 
               { label: "WhatsApp", val: "+52 220 225 6586", href: "https://api.whatsapp.com/send/?phone=522202256586&text=Quiero+saber+m%C3%A1s+de+sus+servicios&type=phone_number&app_absent=0" }, 
               { label: "Ciudad", val: "Puebla, MX" }
 

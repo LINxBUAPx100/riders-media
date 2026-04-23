@@ -11,8 +11,6 @@ export const COLORS = {
 
 export const CATALOG = [
   { id: "reel", tag: "Por pieza", price: "$800", name: "Edición Reel / TikTok", desc: "Edición dinámica con Motion Graphics sobre material del cliente.", highlight: false },
-  { id: "Diseño", tag: "pago único", price: "$3,500", name: "Branding / Marca", desc: "Diseñamos tu identidad visual a tu medida.", highlight: true },
-  { id: "tktk", tag: "Por pieza", price: "$1,800", name: "Manejo de redes / TikTok", desc: "Gestión para cuentas de TikTok y formación de influencer", highlight: false },
   { id: "gmb", tag: "Pago único", price: "$2,500", name: "Turbo Google Business", desc: "Optimización de ficha en Maps para aparecer en búsquedas locales.", highlight: false },
   { id: "flash", tag: "Mensual", price: "$3,500", name: "Gestión Campañas Flash", desc: "Configuración y monitoreo de Ads para ventas rápidas (+ inversión).", highlight: false },
   { id: "smkit", tag: "Pago único", price: "$3,500", name: "Social Media Kit", desc: "Set de 5 plantillas editables e identidad básica para redes.", highlight: false },
