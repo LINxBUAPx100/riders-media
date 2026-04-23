@@ -5,6 +5,17 @@ import "./index.css";
 
 const { BG, BG2, SURFACE, INK, INK2, INK3, ACCENT, ACCENT2, BORDER, RIDERS, SUCCESS, WARNING, INFO, MUTED_RED, MUTED_TEAL, TERRA } = COLORS;
 
+// ── HOOK RESPONSIVE (DETECTOR DE CELULARES) ──────────────────────────────
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 800);
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 800);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+  return isMobile;
+}
+
 // ── COMPONENTES UI ───────────────────────────────────────────────────────
 
 function Chip({ children, outline, accent }) {
@@ -48,7 +59,7 @@ function HomeView({ nav }) {
       {/* 1. HERO EXPANDIDO Y ESPACIADO */}
       <section style={{ padding: "100px 8vw 160px", position: "relative", overflow: "hidden", display: "flex", flexWrap: "wrap", alignItems: "center", gap: "60px", minHeight: "100vh" }}>
         
-        <div style={{ flex: "1 1 520px", position: "relative", zIndex: 2 }}>
+        <div style={{ flex: "1 1 300px", position: "relative", zIndex: 2 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 24 }}>
             <div style={{ width: 12, height: 12, borderRadius: "50%", background: ACCENT, boxShadow: `0 0 14px ${ACCENT}` }} />
             <span style={{ fontSize: 12, fontWeight: 700, color: INK2, letterSpacing: "0.1em", textTransform: "uppercase" }}>UNIDAD DE RESPUESTA RÁPIDA · PUEBLA, MX</span>
@@ -72,14 +83,11 @@ function HomeView({ nav }) {
           </div>
         </div>
 
-        {/* ── ELEMENTO VISUAL HERO (AHORA CON VIDEO INTERACTIVO) ── */}
-        <div style={{ flex: "1 1 400px", minHeight: "500px", background: SURFACE, border: `1px solid ${BORDER}`, borderRadius: "8px", position: "relative", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
-          
+        {/* ── ELEMENTO VISUAL HERO ── */}
+        <div style={{ flex: "1 1 400px", minHeight: "400px", background: SURFACE, border: `1px solid ${BORDER}`, borderRadius: "8px", position: "relative", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
           {!playVideo ? (
-            // ESTADO 1: Diseño original con botón
             <>
               <div style={{ position: "absolute", inset: 0, backgroundImage: `linear-gradient(${BORDER} 1px, transparent 1px), linear-gradient(90deg, ${BORDER} 1px, transparent 1px)`, backgroundSize: "40px 40px", opacity: 0.5 }} />
-              
               <div style={{ textAlign: "center", zIndex: 2 }}>
                 <div 
                   onClick={() => setPlayVideo(true)} 
@@ -93,7 +101,6 @@ function HomeView({ nav }) {
               </div>
             </>
           ) : (
-            // ESTADO 2: El iframe del video
             <iframe 
               style={{ position: "absolute", inset: 0, width: "100%", height: "100%", border: "none" }}
               src="https://player.vimeo.com/video/TU_ID_DE_VIMEO?autoplay=1&title=0&byline=0&portrait=0" 
@@ -103,7 +110,6 @@ function HomeView({ nav }) {
             ></iframe>
           )}
         </div>
-
 
         {/* TICKER INFERIOR (LISTÓN ANIMADO) */}
         <style>{`
@@ -141,9 +147,9 @@ function HomeView({ nav }) {
           
           <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
             {[
-              { icon: "V", title: "Velocidad Táctica", desc: "Sistemas estructurados para entregar proyectos en días, no en meses." },
-              { icon: "F", title: "Foco en Conversión", desc: "Un diseño bonito que no vende es arte. Nosotros hacemos negocios." },
-              { icon: "T", title: "Transparencia Radical", desc: "Catálogo público. Sabes exactamente qué incluye y cuánto cuesta." }
+              { icon: "⚡", title: "Velocidad Táctica", desc: "Sistemas estructurados para entregar proyectos en días, no en meses." },
+              { icon: "🎯", title: "Foco en Conversión", desc: "Un diseño bonito que no vende es arte. Nosotros hacemos negocios." },
+              { icon: "🔍", title: "Transparencia Radical", desc: "Catálogo público. Sabes exactamente qué incluye y cuánto cuesta." }
             ].map((item, i) => (
               <div key={i} style={{ display: "flex", gap: 24, background: SURFACE, padding: "32px", borderRadius: "8px", border: `1px solid ${BORDER}` }}>
                 <div style={{ fontSize: 32 }}>{item.icon}</div>
@@ -158,7 +164,7 @@ function HomeView({ nav }) {
       </section>
 
       {/* 3. MÉTRICAS DE IMPACTO */}
-      <section style={{ padding: "12px 8vw", background: INK, display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 32, borderTop: `1px solid ${BORDER}`, borderBottom: `1px solid ${BORDER}` }}>
+      <section style={{ padding: "40px 8vw", background: INK, display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", gap: 32, borderTop: `1px solid ${BORDER}`, borderBottom: `1px solid ${BORDER}` }}>
           {[
             { val: "48h", lab: "Tiempo de Respuesta" },
             { val: "100%", lab: "Transparencia de Costos" },
@@ -181,21 +187,15 @@ function HomeView({ nav }) {
                  onMouseEnter={e => { e.currentTarget.style.borderColor = ACCENT; e.currentTarget.style.transform = "translateY(-4px)" }}
                  onMouseLeave={e => { e.currentTarget.style.borderColor = BORDER; e.currentTarget.style.transform = "translateY(0)" }}>
               
-              {/* NÚMERO GIGANTE */}
               <div style={{ fontSize: 72, fontWeight: 900, color: p.numColor || BORDER, marginBottom: 16, fontFamily: "'Barlow Condensed', sans-serif", opacity: 0.6 }}>
                 {p.num}
               </div>
-              
-              {/* TÍTULO */}
               <h3 style={{ fontSize: 24, color: p.titleColor || INK, marginBottom: 12, fontWeight: 800, textTransform: "uppercase" }}>
                 {p.title}
               </h3>
-              
-              {/* TEXTO DESCRIPTIVO */}
               <p style={{ color: p.bodyColor || INK2, lineHeight: 1.7 }}>
                 {p.body}
               </p>
-
             </div>
           ))}
         </div>
@@ -205,7 +205,7 @@ function HomeView({ nav }) {
       <section style={{ padding: "140px 8vw", background: BG, borderBottom: `1px solid ${BORDER}`, textAlign: "center" }}>
         <div style={{ maxWidth: 700, margin: "0 auto" }}>
           <div style={{ width: 64, height: 64, background: SURFACE, border: `1px solid ${BORDER}`, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 24, margin: "0 auto 32px", color: ACCENT }}>
-            E
+            📈
           </div>
           <h2 style={{ fontSize: "clamp(42px, 6vw, 64px)", color: INK, fontWeight: 900, lineHeight: 1, marginBottom: 24, fontFamily: "'Barlow Condensed', sans-serif", textTransform: "uppercase" }}>
             ¿Listo para acelerar tu crecimiento?
@@ -220,11 +220,11 @@ function HomeView({ nav }) {
       </section>
 
       {/* SOCIAL PROOF */}
-      <section style={{ padding: "10px 8vw", background: BG2, borderBottom: `1px solid ${BORDER}`, textAlign: "center" }}>
+      <section style={{ padding: "40px 8vw", background: BG2, borderBottom: `1px solid ${BORDER}`, textAlign: "center" }}>
         <p style={{ fontSize: 12, fontWeight: 800, color: INK3, letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 32 }}>Marcas que confían en nosotros</p>
-        <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "clamp(20px, 8vw, 100px)", opacity: 0.5, filter: "grayscale(59%)" }}>
+        <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "clamp(20px, 6vw, 100px)", opacity: 0.5, filter: "grayscale(100%)" }}>
           {["MotoShop GDL", "Clínica Vita", "Tacos El Rancho", "Ropa Urbana MX"].map((brand, i) => (
-            <span key={i} style={{ fontSize: 24, fontWeight: 900, fontFamily: "'Barlow Condensed', sans-serif", color: INK }}>{brand}</span>
+            <span key={i} style={{ fontSize: "clamp(18px, 3vw, 24px)", fontWeight: 900, fontFamily: "'Barlow Condensed', sans-serif", color: INK }}>{brand}</span>
           ))}
         </div>
       </section>
@@ -242,7 +242,7 @@ function CatalogView({ nav }) {
     return (
       <div style={{ marginBottom: 64 }}>
         <SectionLabel>{title}</SectionLabel>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: 24 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: 24 }}>
           {items.map(s => (
             <div key={s.id} style={{ 
               background: s.highlight ? BG2 : "transparent", 
@@ -292,7 +292,7 @@ function ValorView({ stats }) {
       <h1 style={{ fontSize: "clamp(32px, 5vw, 48px)", fontWeight: 900, marginBottom: 80, fontFamily: "'Barlow Condensed'", textTransform: "uppercase" }}>
         ¿POR QUÉ RIDERS ES LA <span style={{ color: COLORS.ACCENT }}>OPCIÓN LÓGICA?</span>
       </h1>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(340px, 1fr))", gap: "40px" }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "40px" }}>
         {stats && stats.length > 0 ? stats.map((stat, i) => {
           const maxVal = Math.max(stat.freelance, stat.agencias, stat.riders);
           const safeMax = maxVal === 0 ? 1 : maxVal;
@@ -306,7 +306,7 @@ function ValorView({ stats }) {
             <div key={i} style={{ background: COLORS.SURFACE, padding: "40px", borderRadius: "12px", border: `1px solid ${COLORS.BORDER}`, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
               <div>
                 <h3 style={{ fontSize: "18px", fontWeight: 800, marginBottom: "40px", textAlign: "center", textTransform: "uppercase" }}>{stat.label}</h3>
-                <div style={{ display: "flex", alignItems: "flex-end", height: "200px", gap: "20px", borderBottom: `1px solid ${COLORS.BORDER}`, paddingBottom: "15px" }}>
+                <div style={{ display: "flex", alignItems: "flex-end", height: "200px", gap: "10px", borderBottom: `1px solid ${COLORS.BORDER}`, paddingBottom: "15px" }}>
                   <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", height: "100%" }}>
                     <div style={{ flex: 1, width: "100%", display: "flex", alignItems: "flex-end" }}>
                       <div style={{ height: `${fHeight}%`, width: "100%", background: COLORS.INK3, borderRadius: "4px 4px 0 0", transition: "height 1s cubic-bezier(0.4, 0, 0.2, 1)" }} />
@@ -395,7 +395,7 @@ function AboutView() {
   );
 }
 
-function ContactView() {
+function ContactView({ isMobile }) {
   const [form, setForm] = useState({ name: "", email: "", phone: "", service: "content", message: "" });
   const [sent, setSent] = useState(false);
   const [error, setError] = useState(false);
@@ -415,31 +415,22 @@ function ContactView() {
 
   return (
     <div style={{ padding: "120px 8vw", background: BG }}>
-      <div style={{ maxWidth: 1000, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1.5fr", gap: 0, border: `1px solid ${BORDER}`, borderRadius: "8px", overflow: "hidden" }}>
+      {/* AQUÍ ESTÁ EL AJUSTE RESPONSIVE DE COLUMNAS DE CONTACTO */}
+      <div style={{ maxWidth: 1000, margin: "0 auto", display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1.5fr", gap: 0, border: `1px solid ${BORDER}`, borderRadius: "8px", overflow: "hidden" }}>
         
-        {/* PANEL IZQUIERDO (INFORMACIÓN) */}
         <div style={{ background: BG2, padding: "60px 40px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
           <div>
             <h1 style={{ fontSize: "clamp(36px, 4vw, 48px)", fontWeight: 900, color: INK, marginBottom: 40, fontFamily: "'Barlow Condensed', sans-serif", textTransform: "uppercase", lineHeight: 1 }}>Hablemos<br /><span style={{ color: ACCENT }}>Hoy.</span></h1>
             <div style={{ display: "flex", flexDirection: "column", gap: 32 }}>
               {[
                 { label: "Email", val: "contacto@riders.media" }, 
-                { 
-                  label: "WhatsApp", 
-                  color: "#25D366",       /* <--- Color para la palabra "WHATSAPP" */
-                  valColor: INK,          /* <--- Color para el número "+52..." */
-                  val: "+52 220 225 6586", 
-                  href: "https://api.whatsapp.com/send/?phone=522202256586" 
-                }, 
+                { label: "WhatsApp", color: "#25D366", valColor: INK, val: "+52 220 225 6586", href: "https://api.whatsapp.com/send/?phone=522202256586" }, 
                 { label: "Ciudad", val: "Puebla, MX" }
               ].map(c => (
                 <div key={c.label}>
-                  {/* ETIQUETA */}
                   <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: "0.15em", textTransform: "uppercase", color: c.color || ACCENT, marginBottom: 6 }}>
                     {c.label}
                   </div>
-                  
-                  {/* NÚMERO / VALOR */}
                   <div style={{ fontSize: 16, color: c.valColor || INK, fontWeight: 600 }}>
                     {c.href ? <a href={c.href} target="_blank" rel="noopener noreferrer" style={{ color: "inherit", textDecoration: "none" }}>{c.val}</a> : c.val}
                   </div>
@@ -453,9 +444,9 @@ function ContactView() {
           </div>
         </div>
 
-        {/* PANEL DERECHO (FORMULARIO) */}
         <form onSubmit={handle} style={{ padding: "60px 40px", display: "flex", flexDirection: "column", gap: 24, background: SURFACE }}>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
+          {/* AJUSTE RESPONSIVE DENTRO DEL FORMULARIO */}
+          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 20 }}>
             <div>
               <label style={labelStyle}>Nombre</label>
               <input required style={inputStyle} value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} />
@@ -490,28 +481,24 @@ function ContactView() {
   );
 }
 
-// --- COPIAR DESDE AQUÍ ---
-function SocialFloat() {
+function SocialFloat({ isMobile }) {
   const socialLinks = [
     { name: "WA", color: "#25D366", url: "https://api.whatsapp.com/send/?phone=522202256586" },
     { name: "FB", color: "#1877F2", url: "https://www.facebook.com/profile.php?id=61579283677547" },
     { name: "IG", color: "#E4405F", url: "https://www.instagram.com/riders_media.mk/" }
   ];
 
+  // BOTONES MÁS PEQUEÑOS Y MÁS PEGADOS A LA ORILLA EN CELULAR
+  const btnSize = isMobile ? "40px" : "50px";
+  const btnFont = isMobile ? "12px" : "14px";
+  const position = isMobile ? "15px" : "30px";
+
   return (
-    <div style={{ position: "fixed", bottom: "30px", right: "30px", display: "flex", flexDirection: "column", gap: "12px", zIndex: 2000 }}>
+    <div style={{ position: "fixed", bottom: position, right: position, display: "flex", flexDirection: "column", gap: "10px", zIndex: 2000 }}>
       {socialLinks.map((link) => (
         <a 
-          key={link.name}
-          href={link.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{
-            width: "50px", height: "50px", borderRadius: "50%", background: link.color,
-            color: "#fff", display: "flex", alignItems: "center", justifyContent: "center",
-            textDecoration: "none", fontWeight: "900", fontSize: "14px",
-            boxShadow: "0 4px 12px rgba(0,0,0,0.2)", transition: "transform 0.3s ease"
-          }}
+          key={link.name} href={link.url} target="_blank" rel="noopener noreferrer"
+          style={{ width: btnSize, height: btnSize, borderRadius: "50%", background: link.color, color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", textDecoration: "none", fontWeight: "900", fontSize: btnFont, boxShadow: "0 4px 12px rgba(0,0,0,0.2)", transition: "transform 0.3s ease" }}
           onMouseEnter={e => e.currentTarget.style.transform = "scale(1.1) translateY(-5px)"}
           onMouseLeave={e => e.currentTarget.style.transform = "scale(1) translateY(0)"}
         >
@@ -522,20 +509,25 @@ function SocialFloat() {
   );
 }
 
+// ── APP RAÍZ ───────────────────────────────────────────────────────────
+
 export default function App() {
   const [page, setPage] = useState("inicio");
   const [marketStats, setMarketStats] = useState([]);
   const [casesList, setCasesList] = useState(CASES || []);
   
+  // Estados para el Responsive
+  const isMobile = useIsMobile();
+  const [menuOpen, setMenuOpen] = useState(false);
+  
   const nav = (p) => { 
     setPage(p); 
+    setMenuOpen(false); // Cierra el menú al navegar
     window.scrollTo({ top: 0, behavior: "smooth" }); 
   };
 
-  // 1. Fetch de Estadísticas (Maquinaria de Gráficas)
   useEffect(() => {
     if (!SHEET_CSV_URL || SHEET_CSV_URL === "" || SHEET_CSV_URL.includes("sharing")) return;
-    
     fetch(`${SHEET_CSV_URL}&t=${Date.now()}`)
       .then(res => res.text())
       .then(csvText => {
@@ -546,26 +538,16 @@ export default function App() {
           if (cols.length >= 4) {
              const freelanceVal = parseFloat(cols[1]); 
              if (isNaN(freelanceVal)) return null;
-             return { 
-               label: cols[0], 
-               freelance: freelanceVal || 0, 
-               agencias: parseFloat(cols[2]) || 0, 
-               riders: parseFloat(cols[3]) || 0, 
-               description: cols.slice(4).join(',') 
-             };
+             return { label: cols[0], freelance: freelanceVal || 0, agencias: parseFloat(cols[2]) || 0, riders: parseFloat(cols[3]) || 0, description: cols.slice(4).join(',') };
           }
           return null;
         }).filter(item => item && item.label);
-        
         if(parsed.length > 0) setMarketStats(parsed);
-      })
-      .catch(err => console.error("Error al cargar estadísticas:", err));
+      }).catch(err => console.error(err));
   }, []);
 
-  // 2. Fetch de Casos (Maquinaria de Portafolio)
   useEffect(() => {
     if (!CASES_CSV_URL || CASES_CSV_URL === "" || CASES_CSV_URL.includes("sharing")) return;
-    
     fetch(`${CASES_CSV_URL}&t=${Date.now()}`)
       .then(res => res.text())
       .then(csvText => {
@@ -574,20 +556,12 @@ export default function App() {
         const parsed = rows.map(row => {
           const cols = row.replace(/\r/g, '').split(','); 
           if (cols.length >= 4) {
-             return { 
-               cat: cols[0], 
-               client: cols[1], 
-               result: cols[2], 
-               color: cols[3] || ACCENT, 
-               link: cols[4] || "#" 
-             };
+             return { cat: cols[0], client: cols[1], result: cols[2], color: cols[3] || ACCENT, link: cols[4] || "#" };
           }
           return null;
         }).filter(item => item && item.client);
-        
         if(parsed.length > 0) setCasesList(parsed);
-      })
-      .catch(err => console.error("Error al cargar casos:", err));
+      }).catch(err => console.error(err));
   }, []);
 
   const PAGES = [
@@ -600,11 +574,9 @@ export default function App() {
   ];
 
   return (
-    // 1. AÑADIMOS DISPLAY FLEX Y FLEX-DIRECTION AL CONTENEDOR PRINCIPAL
     <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh", background: BG, color: INK, fontFamily: "system-ui, sans-serif" }}>
       
-      {/* Botones Sociales Flotantes */}
-      <SocialFloat />
+      <SocialFloat isMobile={isMobile} />
 
       <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 1000, background: `${BG}ee`, backdropFilter: "blur(12px)", borderBottom: `1px solid ${BORDER}`, height: "80px", display: "flex", alignItems: "center", padding: "0 5vw", justifyContent: "space-between" }}>
         <div onClick={() => nav("inicio")} style={{ cursor: "pointer", display: "flex", alignItems: "center", gap: 10 }}>
@@ -612,37 +584,58 @@ export default function App() {
           <span style={{ fontWeight: 900, fontSize: "20px", letterSpacing: "0.02em" }}>RIDERS MEDIA</span>
         </div>
         
-        <div style={{ display: "flex", gap: "24px", alignItems: "center" }}>
-          {PAGES.map(p => (
-            <button key={p.id} onClick={() => nav(p.id)} style={{ background: "none", border: "none", cursor: "pointer", color: page === p.id ? ACCENT : INK2, fontSize: "12px", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.05em", padding: "8px 0", borderBottom: page === p.id ? `2px solid ${ACCENT}` : "2px solid transparent", transition: "all 0.2s" }}>
-              {p.label}
+        {/* NAVEGACIÓN RESPONSIVE */}
+        {!isMobile ? (
+          <>
+            <div style={{ display: "flex", gap: "24px", alignItems: "center" }}>
+              {PAGES.map(p => (
+                <button key={p.id} onClick={() => nav(p.id)} style={{ background: "none", border: "none", cursor: "pointer", color: page === p.id ? ACCENT : INK2, fontSize: "12px", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.05em", padding: "8px 0", borderBottom: page === p.id ? `2px solid ${ACCENT}` : "2px solid transparent", transition: "all 0.2s" }}>
+                  {p.label}
+                </button>
+              ))}
+            </div>
+            <button onClick={() => nav("contacto")} style={{ background: INK, color: "#fff", border: "none", padding: "12px 28px", borderRadius: "4px", fontWeight: 800, cursor: "pointer", textTransform: "uppercase", fontSize: 12, letterSpacing: "0.05em" }}>
+              Cotizar
             </button>
-          ))}
-        </div>
-        
-        <button onClick={() => nav("contacto")} style={{ background: INK, color: "#fff", border: "none", padding: "12px 28px", borderRadius: "4px", fontWeight: 800, cursor: "pointer", textTransform: "uppercase", fontSize: 12, letterSpacing: "0.05em" }}>
-          Cotizar
-        </button>
+          </>
+        ) : (
+          <button onClick={() => setMenuOpen(!menuOpen)} style={{ background: "none", border: "none", fontSize: "28px", color: INK, cursor: "pointer" }}>
+            {menuOpen ? "✕" : "☰"}
+          </button>
+        )}
       </nav>
 
-      {/* 2. AÑADIMOS flex: 1 A LA ETIQUETA MAIN PARA QUE EMPUJE EL FOOTER HACIA ABAJO */}
+      {/* MENÚ DESPLEGABLE MÓVIL */}
+      {isMobile && menuOpen && (
+        <div style={{ position: "fixed", top: "80px", left: 0, right: 0, background: BG, borderBottom: `1px solid ${BORDER}`, zIndex: 999, display: "flex", flexDirection: "column", padding: "20px 5vw", boxShadow: "0 10px 20px rgba(0,0,0,0.1)" }}>
+           {PAGES.map(p => (
+             <button key={p.id} onClick={() => nav(p.id)} style={{ background: "none", border: "none", color: page === p.id ? ACCENT : INK, fontSize: "16px", fontWeight: 800, textTransform: "uppercase", textAlign: "left", padding: "15px 0", borderBottom: `1px solid ${BORDER}` }}>
+               {p.label}
+             </button>
+           ))}
+           <button onClick={() => nav("contacto")} style={{ background: INK, color: "#fff", border: "none", padding: "15px", borderRadius: "4px", fontWeight: 800, width: "100%", marginTop: "15px", textTransform: "uppercase" }}>
+             Cotizar
+           </button>
+        </div>
+      )}
+
       <main style={{ flex: 1, paddingTop: "80px" }}>
         {page === "inicio" && <HomeView nav={nav} />}
         {page === "catalogo" && <CatalogView nav={nav} />}
         {page === "valor" && <ValorView stats={marketStats} />}
         {page === "casos" && <CasesView casesData={casesList} />}
         {page === "agencia" && <AboutView />}
-        {page === "contacto" && <ContactView />}
+        {page === "contacto" && <ContactView isMobile={isMobile} />}
       </main>
 
-      <footer style={{ padding: "20px 5vw", borderTop: `1px solid ${BORDER}`, background: BG2 }}>
+      <footer style={{ padding: "40px 5vw", borderTop: `1px solid ${BORDER}`, background: BG2 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 24 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
              <div style={{ width: 24, height: 24, background: INK, borderRadius: "4px", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontWeight: 900, fontSize: 12 }}>R</div>
              <span style={{ fontWeight: 900, color: INK, letterSpacing: "0.05em" }}>RIDERS MEDIA</span>
           </div>
           
-          <div style={{ display: "flex", gap: 24, flexWrap: "wrap" }}>
+          <div style={{ display: "flex", gap: 20, flexWrap: "wrap" }}>
             {PAGES.map(p => (
               <button key={p.id} onClick={() => nav(p.id)} style={{ background: "none", border: "none", color: INK2, fontSize: 12, fontWeight: 700, textTransform: "uppercase", cursor: "pointer" }}>
                 {p.label}
