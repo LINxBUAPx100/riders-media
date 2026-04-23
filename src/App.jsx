@@ -72,7 +72,7 @@ function HomeView({ nav }) {
           </div>
         </div>
 
-        <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, borderTop: `1px solid ${BORDER}`, height: 15, display: "flex", alignItems: "center" }}>
+        <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, borderTop: `1px solid ${BORDER}`, height: 22, display: "flex", alignItems: "center" }}>
           <div style={{ display: "flex", gap: 48, animation: "ticker 60s linear infinite", whiteSpace: "nowrap" }}>
             {["Edición de Video", "Motion Graphics", "Google Ads", "Landing Pages", "Social Media", "SEO Local", "Branding en Movimiento,Edición de Video",].map((t, i) => (
               <span key={i} style={{ fontSize: 15, fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", color: i % 3 === 0 ? ACCENT : MUTED }}>{t} ·</span>
