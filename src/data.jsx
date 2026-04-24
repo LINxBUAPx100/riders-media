@@ -49,7 +49,7 @@ export const CATALOG = [
 
 // ── CASOS DE ÉXITO ───────────────────────────────────────────────────────
 export const CASES = [
-  { cat: "Muy pronto!", client: "Podrias ser el primero", result: "Alcanza tus metas", color: "#0D9488", link: "#" },
+  { cat: "Muy pronto!", client: "Podrias ser el primero", result: "+340% Reproducciones", color: "#0D9488", link: "#" },
 
 ];
 

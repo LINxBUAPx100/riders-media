@@ -40,3 +40,12 @@ body {
   background: rgba(6,182,212,0.2);
   color: #fff;
 }
+
+@keyframes ticker {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.ticker-wrapper {
+  animation: ticker 40s linear infinite;
+}
