@@ -432,8 +432,8 @@ if (isLoading) {
           position: "absolute",
           top: "-10%", /* Más margen para el micro-zoom de la animación */
           left: "-10%",
-          width: "120%",
-          height: "120%",
+          width: "100%",
+          height: "100%",
           backgroundImage: "url('/patron.svg')",
           backgroundRepeat: "repeat",
           backgroundSize: "1200px", /* <--- TAMAÑO GIGANTE AJUSTADO AQUÍ */
